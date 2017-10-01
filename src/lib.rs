@@ -1,6 +1,6 @@
-const CM_FIRST: i8 = 1;
-const CM_LAST: i8 = 2;
-const CM_RANGE: i8 = 3;
+pub const CM_FIRST: i8 = 1;
+pub const CM_LAST: i8 = 2;
+pub const CM_RANGE: i8 = 3;
 
 pub fn one(start: &str, finish: &str, input: &mut String, cm: i8, copyonly: bool) -> String
 {
