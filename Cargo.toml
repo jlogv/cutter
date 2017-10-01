@@ -1,0 +1,11 @@
+[package]
+name = "cutter"
+version = "0.1.0"
+authors = ["Elmano Spasius <spasius@gmail.com>"]
+
+description = "A simple usefull functions for parsing."
+keywords = ["cut", "parse", "string", "html"]
+categories = ["algorithms", "data-structures", "value-formating"]
+license = "MIT/Apache-2.0"
+
+[dependencies]
