@@ -2,7 +2,10 @@ pub const CM_FIRST: i8 = 1;
 pub const CM_LAST: i8 = 2;
 pub const CM_RANGE: i8 = 3;
 
-pub fn one(start: &str, finish: &str, input: &mut String, cm: i8, copyonly: bool) -> String
+// cut text between start & finish text parts, mode of cutting can be selected
+// cm_first will find first, cm_last will search from end, cm_range will cut between first & last
+// if only extract and don`t change the input, copyonly must be "true"
+pub fn one(start: &str, finish: &str, input: &mut String, mode: i8, copyonly: bool) -> String
 {
   let mut original = input.clone();
   let original_static = input.clone();
@@ -25,7 +28,7 @@ pub fn one(start: &str, finish: &str, input: &mut String, cm: i8, copyonly: bool
           cut_start = index;
           read_start = index + start.len();
           
-          if cm == CM_FIRST || cm == CM_RANGE {
+          if mode == CM_FIRST || mode == CM_RANGE {
               break;
             }
         }
@@ -36,7 +39,7 @@ pub fn one(start: &str, finish: &str, input: &mut String, cm: i8, copyonly: bool
       read_end = index;
       cut_end = index + finish.len();
       if read_end > read_start {
-          if cm == CM_FIRST || cm == CM_LAST {
+          if mode == CM_FIRST || mode == CM_LAST {
             break;
           }
         }
@@ -46,15 +49,15 @@ pub fn one(start: &str, finish: &str, input: &mut String, cm: i8, copyonly: bool
   let mut result = String::from("");
   
   if read_end > read_start && read_end > 0 {
-      let mut ccc: Vec<u8> = input.bytes().collect();
-      let mut ddd: Vec<u8> = vec![];
-      ddd.extend_from_slice(&ccc[read_start..read_end]);
+      let mut input_bytes: Vec<u8> = input.bytes().collect();
+      let mut result_bytes: Vec<u8> = vec![];
+      result_bytes.extend_from_slice(&input_bytes[read_start..read_end]);
       
-      result = String::from_utf8(ddd).unwrap();
+      result = String::from_utf8(result_bytes).unwrap();
       
       if copyonly == false {
-          ccc.drain(cut_start..cut_end);
-          original = String::from_utf8(ccc).unwrap();
+          input_bytes.drain(cut_start..cut_end);
+          original = String::from_utf8(input_bytes).unwrap();
         }
     }
   
@@ -63,14 +66,15 @@ pub fn one(start: &str, finish: &str, input: &mut String, cm: i8, copyonly: bool
   return result;
 }
 
-pub fn all(start: &str, finish: &str, input: &mut String, cm: i8, copyonly: bool/*, output : &mut String*/) -> Vec<String>
+// this will cut all appropriate parts
+pub fn all(start: &str, finish: &str, input: &mut String, mode: i8, copyonly: bool) -> Vec<String>
 {
   let mut original = input.clone();
   let mut result: Vec<String> = vec![];
   let mut work = true;
   
   while work == true {
-      let curr = self::one(start, finish, &mut original, cm, copyonly);
+      let curr = self::one(start, finish, &mut original, mode, copyonly);
       if curr == "" {
         work = false;
       } else {
